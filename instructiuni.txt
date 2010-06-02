@@ -1,0 +1,23 @@
+Bootloader-ul de fata este o varianta modificata a BootloadHID (http://www.obdev.at/products/vusb/bootloadhid.html), avand urmatoarele facilitati si avantaje:
+
+- Nu necesita instalarea unui driver special de Windows
+- Este deja configurat pentru setup-ul folosit la proiect (Atmega16 @ 16MHz cu USB-ul conectat pe D+ -> PD2, D- -> PD3)
+- S-au adaugat urmatoarele functii:
+	- LED-ul de pe PD7 clipeste cat timp ne aflam in bootloader (ca sa stim ca ne aflam in acest mod)
+	- Aplicatia porneste daca se apasa pe tasta conectata la PD6 sau daca trec 10 secunde fara activitate de programare pe USB (lucru util mai ales in situatiile in care nu e convenabil sa avem in apropiere un calculator cu avrusbboot/bootloadhid cand vrem sa folosim placuta).
+	
+Pentru a instala bootloader-ul, descarcati arhiva de fata si intrati in directorul firmware, unde veti gasi deja compilat main.hex pe care il puteti programa pe chip folosind metodele traditionale (SPI prin seriala, ISP, etc.)
+
+Odata ce bootloader-ul a fost instalat, veti putea programa placuta executand comanda:
+
+bootloadHID.exe programul_vostru.hex
+
+din directorul commandline in intervalul de 10 secunde care trece de la activarea placutei (i.e. cat timp clipeste LED-ul).
+
+Veti observa ca Windows nu mai cere driver (desi se va mai plange ocazional ca nu recunoaste dispozitivul atunci cand acesta intra in aplicatie si nu mai raspunde pe USB - nu-i bai, cand reintrati in modul de programare isi revine).
+
+Extensiile introduse sunt configurabile din firmware/bootloaderconfig.h. Aici puteti dezactiva oricare dintre extensii (tasta, led-ul, autostart-ul) sau sa modificati porturile in cauza sau timpul pana la autostart (cautati define-urile care incep cu "DCM_"). Dupa ce ati efectuat modificarile, trebuie sa recompilati bootloader-ul folosind make clean si make (trebuie sa aveti suita avr-gcc instalata, daca ati instalat AVR Studio 4 aveti tot ce va trebuie).
+
+--
+Dinu Cristian Mircea
+9 Apr 2010
